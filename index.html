@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سجل الديون - التطبيق الذكي لإدارة الديون</title>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+        background-color: #f8fafc;
+        color: #1e293b;
+        line-height: 1.6;
+        transition: all 0.3s ease;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Language Switcher */
+      .language-switcher {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: white;
+        padding: 8px 16px;
+        border-radius: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        gap: 10px;
+        cursor: pointer;
+      }
+
+      .lang-option {
+        padding: 4px 12px;
+        border-radius: 20px;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
+
+      .lang-option.active {
+        background: #c42318;
+        color: white;
+      }
+
+      .lang-option:not(.active):hover {
+        background: #e2e8f0;
+      }
+
+      /* English direction */
+      body.en {
+        direction: ltr;
+        font-family: "Inter", "Cairo", sans-serif;
+      }
+
+      body.en .language-switcher {
+        left: auto;
+        right: 20px;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #d62e22 0%, #c42318 100%);
+        color: white;
+        padding: 60px 0 80px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,170.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-size: cover;
+        opacity: 0.2;
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo img {
+        height: 70px;
+        width: 70px;
+        border-radius: 20%;
+        font-size: 50px;
+        color: #c42318;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .header h2 {
+        font-size: 20px;
+        font-weight: 400;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+
+      .header-btn {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1em;
+      }
+
+      .btn-primary {
+        background: white;
+        color: #c42318;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: #e2e8f0;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      .btn-outline:hover {
+        background: white;
+        color: #c42318;
+        transform: translateY(-2px);
+      }
+
+      /* Sections */
+      section {
+        padding: 60px 0;
+      }
+
+      section:nth-child(even) {
+        background: white;
+      }
+
+      .section-title {
+        font-size: 36px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 50px;
+        color: #1e293b;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: #ff0000;
+        margin: 10px auto 0;
+        border-radius: 2px;
+      }
+
+      /* Features Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: #eef2ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+      }
+
+      .feature-icon i {
+        font-size: 30px;
+        color: #c42318;
+      }
+
+      .feature-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1e293b;
+      }
+
+      .feature-card p {
+        color: #64748b;
+      }
+
+      /* Backup Features Special */
+      .backup-features {
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin-top: 30px;
+      }
+
+      .backup-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .backup-item {
+        text-align: center;
+      }
+
+      .backup-icon {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+      }
+
+      .backup-icon i {
+        font-size: 35px;
+        color: #c42318;
+      }
+
+      .backup-item h4 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1e293b;
+      }
+
+      /* Screenshots */
+      /* .screenshots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 70px;
+        margin-top: 40px;
+      } */
+      .screenshots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 70px;
+        margin-top: 40px;
+      }
+
+      /* .screenshot-item {
+        background: #e2e8f0;
+        height: 420px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #e2e8f0, #f1f5f9);
+        border: 2px dashed #94a3b8;
+        transition: all 0.3s;
+      } */
+      .screenshot-item {
+        background: #e2e8f0;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #e2e8f0, #f1f5f9);
+        border: 2px dashed #94a3b8;
+        overflow: hidden;
+        position: relative;
+        aspect-ratio: 9 / 16; /* نسبة أبعاد مناسبة للشاشات (مثل الموبايل) */
+        max-width: 100%;
+        transition: all 0.3s;
+      }
+
+      .screenshot-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .screenshot-placeholder {
+        text-align: center;
+        color: #64748b;
+        overflow: hidden;
+      }
+
+      .screenshot-placeholder img {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
+        /* height: 1280px;
+        width: 720px;
+        font-size: 40px;
+        margin-bottom: 10px; */
+      }
+
+      /* تحسين للشاشات الصغيرة */
+      @media (max-width: 768px) {
+        .screenshots-grid {
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 15px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .screenshots-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 10px;
+        }
+      }
+
+      /* Why Choose Us */
+      .why-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+      }
+
+      .why-item {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .why-icon {
+        width: 60px;
+        height: 60px;
+        background: #eef2ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+      }
+
+      .why-icon i {
+        font-size: 25px;
+        color: #c42318;
+      }
+
+      .why-item h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .why-item p {
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      /* Target Audience */
+      .audience-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .audience-item {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .audience-item i {
+        font-size: 30px;
+        color: #c42318;
+        margin-bottom: 10px;
+      }
+
+      .audience-item h4 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .audience-item p {
+        color: #64748b;
+        font-size: 14px;
+      }
+
+      /* Privacy Section */
+      .privacy-highlights {
+        background: #301a1a;
+        color: white;
+        padding: 40px;
+        border-radius: 20px;
+      }
+
+      .privacy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .privacy-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .privacy-item i {
+        color: #4ade80;
+        font-size: 20px;
+      }
+
+      .privacy-btn {
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      /* Download Section */
+      .download {
+        text-align: center;
+        background: white;
+      }
+
+      .play-badge {
+        display: inline-block;
+        margin: 30px 0 20px;
+      }
+
+      .play-badge img {
+        height: 60px;
+        width: auto;
+      }
+
+      /* Footer */
+      .footer {
+        background: #2c191a;
+        color: white;
+        padding: 40px 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 30px;
+      }
+
+      .footer-logo {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .footer-contact p {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .footer-contact i {
+        color: #ff0000;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #334155;
+        font-size: 14px;
+        color: #94a3b8;
+      }
+
+      /* Arabic/English specific */
+      .lang-en {
+        display: none;
+      }
+
+      body.en .lang-ar {
+        display: none;
+      }
+
+      body.en .lang-en {
+        display: block;
+      }
+
+      body.en .lang-en-inline {
+        display: inline-block;
+      }
+
+      .lang-en-inline {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 36px;
+        }
+
+        .section-title {
+          font-size: 28px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher" onclick="toggleLanguage()">
+      <span class="lang-option active" id="lang-ar-btn">العربية</span>
+      <span class="lang-option" id="lang-en-btn">English</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <img src="image_en/logo_main.png" alt="" />
+          <!-- <i class="fas fa-book"></i> -->
+        </div>
+        <h1 class="lang-ar">سجل الديون</h1>
+        <h1 class="lang-en" style="display: none">Debt Record</h1>
+
+        <h2 class="lang-ar">
+          التطبيق الذكي لإدارة ديونك الشخصية بأمان وخصوصية
+        </h2>
+        <h2 class="lang-en" style="display: none">
+          The smart app to manage your personal debts securely and privately
+        </h2>
+
+        <div class="header-btn">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.debtrecord.manager"
+            class="btn btn-primary"
+          >
+            <span class="lang-ar">تجربة التطبيق</span>
+            <span class="lang-en" style="display: none">Try the App</span>
+            <i class="fas fa-arrow-left"></i>
+          </a>
+          <a href="#privacy" class="btn btn-outline">
+            <span class="lang-ar">سياسة الخصوصية</span>
+            <span class="lang-en" style="display: none">Privacy Policy</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section>
+      <div class="container">
+        <h2 class="section-title lang-ar">عن التطبيق</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          About The App
+        </h2>
+
+        <p
+          class="lang-ar"
+          style="
+            font-size: 18px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+          "
+        >
+          تطبيق "سجل الديون" هو الحل الأمثل لإدارة جميع مستحقاتك المالية مع
+          الأصدقاء والعائلة والعملاء. تطبيق آمن وخاص بالكامل، جميع بياناتك مخزنة
+          على جهازك فقط مع خيارات نسخ احتياطي ذكية عبر Google Drive أو محلياً
+          على جهازك. تم تصميم التطبيق خصيصًا للغة العربية ويدعم الواجهتين
+          العربية والإنجليزية.
+        </p>
+
+        <p
+          class="lang-en"
+          style="
+            display: none;
+            font-size: 18px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+          "
+        >
+          "Debt Record" app is the ideal solution for managing all your
+          financial dues with friends, family, and clients. A completely secure
+          and private app, all your data is stored only on your device with
+          smart backup options via Google Drive or locally on your device. The
+          app is specifically designed for Arabic and supports both Arabic and
+          English interfaces.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Features -->
+    <section style="background: white">
+      <div class="container">
+        <h2 class="section-title lang-ar">المميزات الرئيسية</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Main Features
+        </h2>
+
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <h3 class="lang-ar">إدارة شاملة للديون</h3>
+            <h3 class="lang-en" style="display: none">
+              Comprehensive Debt Management
+            </h3>
+            <p class="lang-ar">
+              سجل جميع الديون مع تفاصيل المبلغ والتاريخ والوصف وتتبع حالة الدين
+            </p>
+            <p class="lang-en" style="display: none">
+              Record all debts with amount, date, description, and track debt
+              status
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-address-book"></i>
+            </div>
+            <h3 class="lang-ar">تنظيم جهات الاتصال</h3>
+            <h3 class="lang-en" style="display: none">Contacts Organization</h3>
+            <p class="lang-ar">
+              دمج كامل مع دفتر هاتفك وإضافة الأرقام تلقائياً وبحث سريع
+            </p>
+            <p class="lang-en" style="display: none">
+              Full integration with your phonebook, auto-add numbers, and quick
+              search
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <h3 class="lang-ar">تقارير PDF مفصلة</h3>
+            <h3 class="lang-en" style="display: none">Detailed PDF Reports</h3>
+            <p class="lang-ar">
+              إنشاء تقارير شاملة لكل شخص وتصديرها ومشاركتها وطباعتها
+            </p>
+            <p class="lang-en" style="display: none">
+              Create comprehensive reports for each person, export, share, and
+              print
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <h3 class="lang-ar">إحصائيات مرئية</h3>
+            <h3 class="lang-en" style="display: none">Visual Statistics</h3>
+            <p class="lang-ar">
+              مخططات بيانية واضحة لتوزيع الديون وقوائم بأكبر المدينين والدائنين
+            </p>
+            <p class="lang-en" style="display: none">
+              Clear charts for debt distribution and lists of top debtors and
+              creditors
+            </p>
+          </div>
+          <!-- Feature 5 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa fa-calculator"></i>
+            </div>
+            <h3 class="lang-ar">واجهة إدخال سريعة</h3>
+            <h3 class="lang-en" style="display: none">Fast input interface</h3>
+            <p class="lang-ar">مع آلة حاسبة لأضافة الديون بسهولة وسرعة عالية</p>
+            <p class="lang-en" style="display: none">
+              With a calculator for adding debts easily and quickly
+            </p>
+          </div>
+          <!-- Feature 6 -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-gear"></i>
+            </div>
+            <h3 class="lang-ar">الاعدادات</h3>
+            <h3 class="lang-en" style="display: none">Settings</h3>
+            <p class="lang-ar">
+              يدعم اللغتين العربية والانجليزي مع امكانية تحديد العملة
+            </p>
+            <p class="lang-en" style="display: none">
+              It supports both Arabic and English languages ​​with the ability
+              to specify the currency.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Backup Features -->
+    <section>
+      <div class="container">
+        <h2 class="section-title lang-ar">نسخ احتياطي آمن وذكي</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Secure & Smart Backup
+        </h2>
+
+        <div class="backup-features">
+          <div class="backup-grid">
+            <!-- Cloud Backup -->
+            <div class="backup-item">
+              <div class="backup-icon">
+                <i class="fab fa-google-drive"></i>
+              </div>
+              <h4 class="lang-ar">النسخ الاحتياطي السحابي</h4>
+              <h4 class="lang-en" style="display: none">Cloud Backup</h4>
+              <p class="lang-ar">
+                اربط حسابك في Google Drive لعمل نسخة تلقائية من بياناتك واستعدها
+                بضغطة زر عند تغيير جهازك
+              </p>
+              <p class="lang-en" style="display: none">
+                Connect your Google Drive account for automatic backup and
+                restore with one click when changing your device
+              </p>
+            </div>
+
+            <!-- Local Backup -->
+            <div class="backup-item">
+              <div class="backup-icon">
+                <i class="fas fa-sd-card"></i>
+              </div>
+              <h4 class="lang-ar">النسخ الاحتياطي المحلي</h4>
+              <h4 class="lang-en" style="display: none">Local Backup</h4>
+              <p class="lang-ar">
+                احفظ نسخة من قاعدة البيانات على جهازك وتحكم بملفاتك يدوياً
+              </p>
+              <p class="lang-en" style="display: none">
+                Save a copy of the database on your device and control your
+                files manually
+              </p>
+            </div>
+
+            <!-- Easy Restore -->
+            <div class="backup-item">
+              <div class="backup-icon">
+                <i class="fas fa-undo-alt"></i>
+              </div>
+              <h4 class="lang-ar">استعادة سلسة</h4>
+              <h4 class="lang-en" style="display: none">Easy Restore</h4>
+              <p class="lang-ar">استعد بياناتك من أي نسخة احتياطية في أي وقت</p>
+              <p class="lang-en" style="display: none">
+                Restore your data from any backup at any time
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section style="background: white">
+      <div class="container">
+        <h2 class="section-title lang-ar">نظرة سريعة على التطبيق</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Quick Look at the App
+        </h2>
+
+        <div class="screenshots-grid">
+          <!-- Screenshot placeholders - replace with actual images -->
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/home_ar.png" alt="" />
+              <img class="lang-en" src="image_en/home_en.png" alt="" />
+              <!-- <i class="fas fa-mobile-alt"></i> -->
+              <!-- <p class="lang-ar">الصفحة الرئيسية</p>
+              <p class="lang-en" style="display: none">Home Screen</p> -->
+            </div>
+          </div>
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/add_ar.png" alt="" />
+              <img class="lang-en" src="image_en/add_en.png" alt="" />
+              <!-- <i class="fas fa-plus-circle"></i>
+              <p class="lang-ar">إضافة دين</p>
+              <p class="lang-en" style="display: none">Add Debt</p> -->
+            </div>
+          </div>
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/report_ar.png" alt="" />
+              <img class="lang-en" src="image_en/report_en.png" alt="" />
+              <!-- <i class="fas fa-chart-bar"></i>
+              <p class="lang-ar">التقارير</p>
+              <p class="lang-en" style="display: none">Reports</p> -->
+            </div>
+          </div>
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/list_ar.png" alt="" />
+              <img class="lang-en" src="image_en/list_en.png" alt="" />
+              <!-- <i class="fas fa-cog"></i>
+              <p class="lang-ar">النسخ الاحتياطي</p>
+              <p class="lang-en" style="display: none">Backup</p> -->
+            </div>
+          </div>
+
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/person_ar.png" alt="" />
+              <img class="lang-en" src="image_en/person_en.png" alt="" />
+              <!-- <i class="fas fa-mobile-alt"></i> -->
+              <!-- <p class="lang-ar">الصفحة الرئيسية</p>
+              <p class="lang-en" style="display: none">Home Screen</p> -->
+            </div>
+          </div>
+
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/fast_ar.png" alt="" />
+              <img class="lang-en" src="image_en/fast_en.png" alt="" />
+              <!-- <i class="fas fa-mobile-alt"></i> -->
+              <!-- <p class="lang-ar">الصفحة الرئيسية</p>
+              <p class="lang-en" style="display: none">Home Screen</p> -->
+            </div>
+          </div>
+
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/setting_ar.png" alt="" />
+              <img class="lang-en" src="image_en/setting_en.png" alt="" />
+              <!-- <i class="fas fa-mobile-alt"></i> -->
+              <!-- <p class="lang-ar">الصفحة الرئيسية</p>
+              <p class="lang-en" style="display: none">Home Screen</p> -->
+            </div>
+          </div>
+
+          <div class="screenshot-item">
+            <div class="screenshot-placeholder">
+              <img class="lang-ar" src="image_ar/stat_ar.png" alt="" />
+              <img class="lang-en" src="image_en/stat_en.png" alt="" />
+              <!-- <i class="fas fa-mobile-alt"></i> -->
+              <!-- <p class="lang-ar">الصفحة الرئيسية</p>
+              <p class="lang-en" style="display: none">Home Screen</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section>
+      <div class="container">
+        <h2 class="section-title lang-ar">لماذا تختار "سجل الديون"؟</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Why Choose "Debt Record"?
+        </h2>
+
+        <div class="why-grid">
+          <div class="why-item">
+            <div class="why-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h4 class="lang-ar">آمن وخاص</h4>
+            <h4 class="lang-en" style="display: none">Secure & Private</h4>
+            <p class="lang-ar">بياناتك محفوظة محلياً على جهازك فقط</p>
+            <p class="lang-en" style="display: none">
+              Your data is stored locally on your device only
+            </p>
+          </div>
+
+          <div class="why-item">
+            <div class="why-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h4 class="lang-ar">سريع وسهل</h4>
+            <h4 class="lang-en" style="display: none">Fast & Easy</h4>
+            <p class="lang-ar">واجهة عربية بديهية تناسب الجميع</p>
+            <p class="lang-en" style="display: none">
+              Intuitive Arabic interface suitable for everyone
+            </p>
+          </div>
+
+          <div class="why-item">
+            <div class="why-icon">
+              <i class="fas fa-cubes"></i>
+            </div>
+            <h4 class="lang-ar">متكامل</h4>
+            <h4 class="lang-en" style="display: none">Integrated</h4>
+            <p class="lang-ar">جميع أدوات إدارة الديون في تطبيق واحد</p>
+            <p class="lang-en" style="display: none">
+              All debt management tools in one app
+            </p>
+          </div>
+
+          <div class="why-item">
+            <div class="why-icon">
+              <i class="fas fa-moon"></i>
+            </div>
+            <h4 class="lang-ar">وضع ليلي ونهاري</h4>
+            <h4 class="lang-en" style="display: none">Night & Day Mode</h4>
+            <p class="lang-ar">واجهة مريحة للعين في جميع الأوقات</p>
+            <p class="lang-en" style="display: none">
+              Eye-friendly interface at all times
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Target Audience -->
+    <section style="background: white">
+      <div class="container">
+        <h2 class="section-title lang-ar">الفئات المستهدفة</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Target Audience
+        </h2>
+
+        <div class="audience-grid">
+          <div class="audience-item">
+            <i class="fas fa-user-friends"></i>
+            <h4 class="lang-ar">الأفراد</h4>
+            <h4 class="lang-en" style="display: none">Individuals</h4>
+            <p class="lang-ar">لإدارة الديون الشخصية مع الأصدقاء والعائلة</p>
+            <p class="lang-en" style="display: none">
+              For managing personal debts with friends and family
+            </p>
+          </div>
+
+          <div class="audience-item">
+            <i class="fas fa-store"></i>
+            <h4 class="lang-ar">التجار وأصحاب المحلات</h4>
+            <h4 class="lang-en" style="display: none">Shop Owners</h4>
+            <p class="lang-ar">لمتابعة ديون العملاء بسهولة</p>
+            <p class="lang-en" style="display: none">
+              To easily track customer debts
+            </p>
+          </div>
+
+          <div class="audience-item">
+            <i class="fas fa-building"></i>
+            <h4 class="lang-ar">الشركات الصغيرة والمتوسطة</h4>
+            <h4 class="lang-en" style="display: none">Small Businesses</h4>
+            <p class="lang-ar">لإدارة المستحقات</p>
+            <p class="lang-en" style="display: none">
+              For managing receivables
+            </p>
+          </div>
+
+          <div class="audience-item">
+            <i class="fas fa-briefcase"></i>
+            <h4 class="lang-ar">الموظفين</h4>
+            <h4 class="lang-en" style="display: none">Employees</h4>
+            <p class="lang-ar">لإدارة السلف والديون البسيطة</p>
+            <p class="lang-en" style="display: none">
+              For managing advances and small debts
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy Section -->
+    <section id="privacy">
+      <div class="container">
+        <div class="privacy-highlights">
+          <h2 class="section-title" style="color: white; margin-bottom: 30px">
+            <span class="lang-ar">الخصوصية والأمان</span>
+            <span class="lang-en" style="display: none"
+              >Privacy & Security</span
+            >
+          </h2>
+
+          <div class="privacy-grid">
+            <div class="privacy-item">
+              <i class="fas fa-check-circle"></i>
+              <span class="lang-ar">لا نجمع أي بيانات شخصية</span>
+              <span class="lang-en" style="display: none"
+                >We don't collect any personal data</span
+              >
+            </div>
+
+            <div class="privacy-item">
+              <i class="fas fa-check-circle"></i>
+              <span class="lang-ar">جميع البيانات تخزن على جهازك فقط</span>
+              <span class="lang-en" style="display: none"
+                >All data stored only on your device</span
+              >
+            </div>
+
+            <div class="privacy-item">
+              <i class="fas fa-check-circle"></i>
+              <span class="lang-ar"
+                >النسخ الاحتياطي عبر حسابك الشخصي في Drive</span
+              >
+              <span class="lang-en" style="display: none"
+                >Backup via your personal Drive account</span
+              >
+            </div>
+
+            <div class="privacy-item">
+              <i class="fas fa-check-circle"></i>
+              <span class="lang-ar">إعلانات Google AdMob (قد تجمع بيانات)</span>
+              <span class="lang-en" style="display: none"
+                >Google AdMob ads (may collect data)</span
+              >
+            </div>
+          </div>
+
+          <div class="privacy-btn">
+            <a
+              href="https://sites.google.com/view/abdullrahman2/"
+              class="btn btn-primary"
+              style="background: white; color: #1e293b"
+            >
+              <span class="lang-ar">عرض سياسة الخصوصية كاملة</span>
+              <span class="lang-en" style="display: none"
+                >View Full Privacy Policy</span
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download">
+      <div class="container">
+        <h2 class="section-title lang-ar">حمل التطبيق الآن</h2>
+        <h2 class="section-title lang-en" style="display: none">
+          Download the App Now
+        </h2>
+
+        <div class="play-badge">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.debtrecord.manager"
+            style="background: white; color: #1e293b"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
+              alt="Google Play"
+              class="lang-en"
+              style="display: none; height: 60px" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
+              alt="جوجل بلاي"
+              class="lang-ar"
+              style="height: 60px"
+          /></a>
+        </div>
+
+        <p class="lang-ar">
+          نظم ديونك باحترافية وأمان مع خاصية النسخ الاحتياطي المتعددة
+        </p>
+        <p class="lang-en" style="display: none">
+          Organize your debts professionally and securely with multiple backup
+          options
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div>
+            <div class="footer-logo lang-ar">سجل الديون</div>
+            <div class="footer-logo lang-en" style="display: none">
+              Debt Record
+            </div>
+            <p class="lang-ar">التطبيق الذكي لإدارة ديونك الشخصية</p>
+            <p class="lang-en" style="display: none">
+              The smart app to manage your personal debts
+            </p>
+          </div>
+
+          <div class="footer-contact">
+            <h4 class="lang-ar">تواصل معنا</h4>
+            <h4 class="lang-en" style="display: none">Contact Us</h4>
+            <p><i class="fas fa-envelope"></i> abdullrahmanfadhel2@gmail.com</p>
+          </div>
+
+          <div class="footer-contact">
+            <a
+              href="https://sites.google.com/view/abdullrahman2/"
+              style="background: white; color: white"
+            >
+              <h4 class="lang-ar">سياسة الخصوصية</h4>
+              <h4 class="lang-en" style="display: none">Privacy Policy</h4>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="lang-ar">جميع الحقوق محفوظة © 2026 - تطبيق سجل الديون</p>
+          <p class="lang-en" style="display: none">
+            All Rights Reserved © 2026 - Debt Record App
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleLanguage() {
+        const body = document.body;
+        const arBtn = document.getElementById("lang-ar-btn");
+        const enBtn = document.getElementById("lang-en-btn");
+
+        if (body.classList.contains("en")) {
+          // Switch to Arabic
+          body.classList.remove("en");
+          body.dir = "rtl";
+          arBtn.classList.add("active");
+          enBtn.classList.remove("active");
+
+          // Hide all English elements, show Arabic
+          document
+            .querySelectorAll(".lang-en")
+            .forEach((el) => (el.style.display = "none"));
+          document
+            .querySelectorAll(".lang-ar")
+            .forEach((el) => (el.style.display = "block"));
+        } else {
+          // Switch to English
+          body.classList.add("en");
+          body.dir = "ltr";
+          enBtn.classList.add("active");
+          arBtn.classList.remove("active");
+
+          // Hide all Arabic elements, show English
+          document
+            .querySelectorAll(".lang-ar")
+            .forEach((el) => (el.style.display = "none"));
+          document
+            .querySelectorAll(".lang-en")
+            .forEach((el) => (el.style.display = "block"));
+        }
+      }
+
+      // Initialize: Make sure Arabic is visible by default
+      document.addEventListener("DOMContentLoaded", function () {
+        // Ensure all English elements are hidden initially
+        document
+          .querySelectorAll(".lang-en")
+          .forEach((el) => (el.style.display = "none"));
+        document
+          .querySelectorAll(".lang-ar")
+          .forEach((el) => (el.style.display = "block"));
+
+        // Fix for buttons
+        document
+          .querySelectorAll(".btn .lang-en")
+          .forEach((el) => (el.style.display = "none"));
+        document
+          .querySelectorAll(".btn .lang-ar")
+          .forEach((el) => (el.style.display = "inline-block"));
+      });
+    </script>
+  </body>
+</html>

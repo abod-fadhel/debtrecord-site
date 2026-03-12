@@ -47,7 +47,7 @@
         left: 20px;
         z-index: 1000;
         background: white;
-        padding: 8px 16px;
+        padding: 8px 10px;
         border-radius: 30px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         display: flex;
@@ -76,11 +76,36 @@
         background: #e2e8f0;
       }
 
+            /* تحسين للشاشات الصغيرة */
+      @media (max-width: 768px) {
+        .language-switcher {
+          padding: 4px;
+          top: 12px;
+          left: 12px;
+        }
+        .lang-option {
+          padding: 2px 8px;
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .language-switcher {
+          padding: 4px;
+          top: 10px;
+          left: 10px;
+        }
+        .lang-option {
+          padding: 2px 8px;
+          font-size: 14px;
+        }
+      }
+
       /* Header */
       .header {
         background: linear-gradient(135deg, #d62e22 0%, #c42318 100%);
         color: white;
-        padding: 40px 0;
+        padding: 60px 0 40px;
         text-align: center;
         margin-bottom: 40px;
       }
@@ -794,3 +819,4 @@
     </script>
   </body>
 </html>
+

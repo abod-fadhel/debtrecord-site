@@ -1166,63 +1166,72 @@
     </footer>
 
     <script>
-      function toggleLanguage() {
-        const body = document.body;
-        const arBtn = document.getElementById("lang-ar-btn");
-        const enBtn = document.getElementById("lang-en-btn");
+  function toggleLanguage() {
+    const body = document.body;
+    const arBtn = document.getElementById("lang-ar-btn");
+    const enBtn = document.getElementById("lang-en-btn");
 
-        if (body.classList.contains("en")) {
-          // Switch to Arabic
-          body.classList.remove("en");
-          body.dir = "rtl";
-          arBtn.classList.add("active");
-          enBtn.classList.remove("active");
+    if (body.classList.contains("en")) {
+      // Switch to Arabic
+      body.classList.remove("en");
+      body.dir = "rtl";
+      arBtn.classList.add("active");
+      enBtn.classList.remove("active");
 
-          // Hide all English elements, show Arabic
-          document
-            .querySelectorAll(".lang-en")
-            .forEach((el) => (el.style.display = "none"));
-          document
-            .querySelectorAll(".lang-ar")
-            .forEach((el) => (el.style.display = "block"));
-        } else {
-          // Switch to English
-          body.classList.add("en");
-          body.dir = "ltr";
-          enBtn.classList.add("active");
-          arBtn.classList.remove("active");
+      // Hide all English elements, show Arabic
+      document
+        .querySelectorAll(".lang-en")
+        .forEach((el) => el.style.display = "none");
+      document
+        .querySelectorAll(".lang-ar")
+        .forEach((el) => el.style.display = "block");
+    } else {
+      // Switch to English
+      body.classList.add("en");
+      body.dir = "ltr";
+      enBtn.classList.add("active");
+      arBtn.classList.remove("active");
 
-          // Hide all Arabic elements, show English
-          document
-            .querySelectorAll(".lang-ar")
-            .forEach((el) => (el.style.display = "none"));
-          document
-            .querySelectorAll(".lang-en")
-            .forEach((el) => (el.style.display = "block"));
-        }
-      }
+      // Hide all Arabic elements, show English
+      document
+        .querySelectorAll(".lang-ar")
+        .forEach((el) => el.style.display = "none");
+      document
+        .querySelectorAll(".lang-en")
+        .forEach((el) => el.style.display = "block");
+    }
+  }
 
-      // Initialize: Make sure Arabic is visible by default
-      document.addEventListener("DOMContentLoaded", function () {
-        // Ensure all English elements are hidden initially
-        document
-          .querySelectorAll(".lang-en")
-          .forEach((el) => (el.style.display = "none"));
-        document
-          .querySelectorAll(".lang-ar")
-          .forEach((el) => (el.style.display = "block"));
+  // Initialize: Make sure English is visible by default
+  document.addEventListener("DOMContentLoaded", function () {
+    // Set English as default
+    document.body.classList.add("en");
+    document.body.dir = "ltr";
+    
+    // Update language switcher buttons
+    document.getElementById("lang-en-btn").classList.add("active");
+    document.getElementById("lang-ar-btn").classList.remove("active");
+    
+    // Hide all Arabic elements, show English
+    document
+      .querySelectorAll(".lang-ar")
+      .forEach((el) => el.style.display = "none");
+    document
+      .querySelectorAll(".lang-en")
+      .forEach((el) => el.style.display = "block");
 
-        // Fix for buttons
-        document
-          .querySelectorAll(".btn .lang-en")
-          .forEach((el) => (el.style.display = "none"));
-        document
-          .querySelectorAll(".btn .lang-ar")
-          .forEach((el) => (el.style.display = "inline-block"));
-      });
-    </script>
+    // Fix for buttons
+    document
+      .querySelectorAll(".btn .lang-en")
+      .forEach((el) => el.style.display = "inline-block");
+    document
+      .querySelectorAll(".btn .lang-ar")
+      .forEach((el) => el.style.display = "none");
+  });
+</script>
   </body>
 </html>
+
 
 
 

@@ -438,7 +438,7 @@
 
       .why-item h4 {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 5px;
       }
 
@@ -446,7 +446,26 @@
         font-size: 14px;
         color: #64748b;
       }
-
+ @media (max-width: 768px) {
+        .why-grid {
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 12;
+        }
+        .why-item {
+          text-align: center;
+          padding: 8px;
+        }
+      }
+      @media (max-width: 480px) {
+        .why-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 12;
+        }
+        .why-item {
+          text-align: center;
+          padding: 8px;
+        }
+      }
       /* Target Audience */
       .audience-grid {
         display: grid;
@@ -479,6 +498,42 @@
         font-size: 14px;
       }
 
+       @media (max-width: 768px) {
+        .audience-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 10px;
+        }
+
+        .audience-item {
+          padding: 16px;
+        }
+        .audience-item i {
+          font-size: 24px;
+        }
+
+        .audience-item h4 {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .audience-grid {
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 10px;
+        }
+
+        .audience-item {
+          padding: 16px;
+        }
+        .audience-item i {
+          font-size: 24px;
+        }
+
+        .audience-item h4 {
+          font-size: 16px;
+        }
+      }
+
       /* Privacy Section */
       .privacy-highlights {
         background: #301a1a;
@@ -509,7 +564,16 @@
         text-align: center;
         margin-top: 30px;
       }
-
+@media (max-width: 768px) {
+        .privacy-highlights {
+          padding: 20px;
+        }
+      }
+      @media (max-width: 480px) {
+        .privacy-highlights {
+          padding: 20px;
+        }
+      }
       /* Download Section */
       .download {
         text-align: center;
@@ -518,7 +582,7 @@
 
       .play-badge {
         display: inline-block;
-        margin: 30px 0 20px;
+        margin: 8px 0 20px;
       }
 
       .play-badge img {
@@ -594,14 +658,21 @@
       @media (max-width: 768px) {
         .header h1 {
           font-size: 36px;
+          margin-bottom: 40px;
         }
 
         .section-title {
-          font-size: 28px;
+          font-size: 24px;
         }
 
         .features-grid {
           grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 480px) {
+        .header h1 {
+          font-size: 36px;
+          margin-bottom: 38px;
         }
       }
     </style>
@@ -1413,6 +1484,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
   </body>
 </html>
+
 
 
 
